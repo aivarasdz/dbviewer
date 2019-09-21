@@ -65,4 +65,19 @@ public class ConnectionDetailsModel {
         this.password = password;
     }
     //endregion
+
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ConnectionDetailsModel{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", host='").append(host).append('\'');
+        sb.append(", port=").append(port);
+        sb.append(", databaseName='").append(databaseName).append('\'');
+        sb.append(", username='").append(username).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

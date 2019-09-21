@@ -13,17 +13,17 @@ public class ConnectionDetails {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column
+    private String name;
+    @Column
+    private String host;
+    @Column
+    private Integer port;
+    @Column
     private String databaseName;
-    @Column
-    private String hostName;
-    @Column
-    private String configurationName;
     @Column
     private String username;
     @Column
     private String password;
-    @Column
-    private int port;
 
     //region getters-setters
     public Long getId() {
@@ -42,20 +42,20 @@ public class ConnectionDetails {
         this.databaseName = databaseName;
     }
 
-    public String getHostName() {
-        return hostName;
+    public String getHost() {
+        return host;
     }
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
+    public void setHost(String host) {
+        this.host = host;
     }
 
-    public String getConfigurationName() {
-        return configurationName;
+    public String getName() {
+        return name;
     }
 
-    public void setConfigurationName(String configurationName) {
-        this.configurationName = configurationName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
@@ -74,11 +74,11 @@ public class ConnectionDetails {
         this.password = password;
     }
 
-    public int getPort() {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(int port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
     //endregion
