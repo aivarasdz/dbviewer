@@ -1,4 +1,8 @@
 # Database viewer
+
+Designed for PostgreSQL database.    
+Application database for data storage - in memory H2 database.    
+
 # V1
 - CRUD operations for database details connections    
 Response is returned in JSON format for all endpoints, where response is expected.    
