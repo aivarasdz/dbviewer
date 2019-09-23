@@ -16,17 +16,17 @@ public class DatabaseViewController {
     @Autowired
     private DatabaseViewService databaseViewService;
 
-    @GetMapping(path = "/db/view/{id}")
+    @GetMapping(path = "/db/{id}/schemas")
     public List<Map<String, Object>> getSchemas(@PathVariable("id") Long connectionDetailsId){
         return databaseViewService.getDatabaseSchemas(connectionDetailsId);
     }
 
-    @GetMapping(path = "/db/view/{id}/tables")
+    @GetMapping(path = "/db/{id}/tables")
     public List<Map<String, Object>> getSchemaTables(@PathVariable("id") Long connectionDetailsId, @RequestParam("schema") String schemaName){
         return databaseViewService.getTablesForSchema(connectionDetailsId, schemaName);
     }
 
-    @GetMapping(path = "/db/view/{id}/tables/columns")
+    @GetMapping(path = "/db/{id}/columns")
     public List<Map<String, Object>> getTableColumns(
             @PathVariable("id") Long connectionDetailsId,
             @RequestParam("schema") String schemaName,
@@ -35,7 +35,7 @@ public class DatabaseViewController {
         return databaseViewService.getColumnsForTableInSchema(connectionDetailsId, tableName, schemaName);
     }
 
-    @GetMapping(path = "/db/view/{id}/tables/rows")
+    @GetMapping(path = "/db/{id}/rows")
     public List<Map<String, Object>> getTableRows(
             @PathVariable("id") Long connectionDetailsId,
             @RequestParam("schema") String schemaName,

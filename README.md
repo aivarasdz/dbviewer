@@ -28,3 +28,23 @@ Example request/response json body.
   "password": "password"
 }
 ```
+
+## V2
+- Endpoints for database information retrieval (GET request method)    
+
+Request params:
+- schema - name of the targeted schema
+- table - name of the targeted table
+- offset - row offset, default is 0
+- limit - row limit of query, default is 100
+
+path variable {id} should be replaced with connection details id.
+    
+Endpoint list:    
+
+| Endpoint         | request params| description                      | 
+| ---              | ---                                              | ---                                     
+| /db/{id}/schemas |                                                  | list of schemas for connection database
+| /db/{id}/tables  | schema                                           | tables of schema
+| /db/{id}/columns | schema, table                                    | columns of table
+| /db/{id}/rows    | schema, table, offset(optional), limit(optional) | rows in table
