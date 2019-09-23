@@ -59,3 +59,9 @@ Endpoint list:
 | ---                         | ---                   | ---
 | /db/{id}/statistics/tables  | schema, table         | list of schemas for connection database
 | /db/{id}/statistics/columns | schema, table, column | tables of schema
+
+
+## To-Do    
+ 
+- Add custom exceptions for exception handling
+- Add controller advice for response processing upon exception

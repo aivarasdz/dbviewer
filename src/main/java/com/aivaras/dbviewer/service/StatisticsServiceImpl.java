@@ -22,6 +22,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.aivaras.dbviewer.util.JdbcUtils.executeQuery;
+import static com.aivaras.dbviewer.util.StringUtils.throwExceptionIfNotIdentifierPattern;
 
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
@@ -37,6 +38,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public ColumnStatistics getColumnStatistics(Long connectionDetailsId, String schemaName, String tableName, String columnName) {
+        throwExceptionIfNotIdentifierPattern(schemaName, tableName, columnName);
         String getColumnTypeQuery = "SELECT udt_name FROM information_schema.columns WHERE table_schema = ? AND table_name = ? AND column_name = ?";
         ConnectionDetails details = connectionDetailsRepository.findById(connectionDetailsId).orElseThrow(EntityNotFoundException::new);
         try (Connection connection = JdbcUtils.getConnection(details)){
@@ -53,7 +55,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public Map<String, Long> getTableStatistics(Long connectionDetailsId, String schemaName, String tableName) {
-
+        throwExceptionIfNotIdentifierPattern(schemaName, tableName);
         ConnectionDetails connectionDetails = connectionDetailsRepository.findById(connectionDetailsId).orElseThrow(EntityNotFoundException::new);
         Long columnCount = getColumnCount(connectionDetailsId, schemaName, tableName);
         Map<String, Long> tableStatistics = new HashMap<>();
