@@ -99,53 +99,73 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     private ColumnStatistics<Long> getLongStatistics(Connection connection, String schemaName, String tableName, String columnName) throws SQLException {
-        String maxStringValuesQuery = String.format("SELECT %s FROM \"%s\".\"%s\"", columnName, schemaName, tableName);
-        ResultSet rs = connection.createStatement().executeQuery(maxStringValuesQuery);
-        List<Long> valueList = new ArrayList<>();
-        while (rs.next()){
-            valueList.add(rs.getLong(1));
+        String statisticsQuery = String.format("SELECT min(%s), max(%s), avg(%s), count(*) FROM \"%s\".\"%s\"", columnName, columnName, columnName, schemaName, tableName);
+        ResultSet statisticsResultSet = executeQuery(connection, statisticsQuery);
+        if (!statisticsResultSet.next()){
+            return null;
         }
-        valueList = valueList.stream()
-                .filter(Objects::nonNull)
-                .sorted()
-                .collect(Collectors.toList());
-        LongSummaryStatistics statistics = valueList.stream().mapToLong(Long::longValue).summaryStatistics();
+        Long min = statisticsResultSet.getLong(1);
+        Long max = statisticsResultSet.getLong(2);
+        Double average = statisticsResultSet.getDouble(3);
+        Long count = statisticsResultSet.getLong(4);
+        String middleElementQuery = String.format("SELECT %s FROM \"%s\".\"%s\" ORDER BY %s LIMIT ? OFFSET ?", columnName, schemaName, tableName, columnName);
+        Long offset = null;
+        Integer limit = null;
+        if (count % 2 == 0){
+            offset = count / 2 - 1;
+            limit = 2;
+        } else {
+            offset = count / 2;
+            limit = 1;
+        }
+        ResultSet middleElementResult = executeQuery(connection, middleElementQuery, limit, offset);
         Double median = null;
-        if (!valueList.isEmpty()) {
-            int size = valueList.size();
-            int middle = size / 2;
-            if (size % 2 == 0) {
-                median = (valueList.get(middle - 1).doubleValue() + valueList.get(middle).doubleValue()) / 2.0;
+        if (middleElementResult.next()){
+            if (limit == 2){
+                Long e1 = middleElementResult.getLong(1);
+                middleElementResult.next();
+                Long e2 = middleElementResult.getLong(1);
+                median = (e1.doubleValue() + e2.doubleValue())/2;
             } else {
-                median = valueList.get(middle).doubleValue();
+                median = (double) middleElementResult.getLong(1);
             }
         }
-        return new ColumnStatistics<>(columnName, statistics.getMin(), statistics.getMax(), statistics.getAverage(), median);
+        return new ColumnStatistics<>(columnName, min, max, average, median);
     }
 
     private ColumnStatistics<Double> getDoubleStatistics(Connection connection, String schemaName, String tableName, String columnName) throws SQLException {
-        String maxStringValuesQuery = String.format("SELECT %s FROM \"%s\".\"%s\"", columnName, schemaName, tableName);
-        ResultSet rs = connection.createStatement().executeQuery(maxStringValuesQuery);
-        List<Double> valueList = new ArrayList<>();
-        while (rs.next()){
-            valueList.add(rs.getDouble(1));
+        String statisticsQuery = String.format("SELECT min(%s), max(%s), avg(%s), count(*) FROM \"%s\".\"%s\"", columnName, columnName, columnName, schemaName, tableName);
+        ResultSet statisticsResultSet = executeQuery(connection, statisticsQuery);
+        if (!statisticsResultSet.next()){
+            return null;
         }
-        valueList = valueList.stream()
-                .filter(Objects::nonNull)
-                .sorted()
-                .collect(Collectors.toList());
-        DoubleSummaryStatistics statistics = valueList.stream().mapToDouble(Double::doubleValue).summaryStatistics();
+        Double min = statisticsResultSet.getDouble(1);
+        Double max = statisticsResultSet.getDouble(2);
+        Double average = statisticsResultSet.getDouble(3);
+        Long count = statisticsResultSet.getLong(4);
+        String middleElementQuery = String.format("SELECT %s FROM \"%s\".\"%s\" ORDER BY %s LIMIT ? OFFSET ?", columnName, schemaName, tableName, columnName);
+        Long offset = null;
+        Integer limit = null;
+        if (count % 2 == 0){
+            offset = count / 2 - 1;
+            limit = 2;
+        } else {
+            offset = count / 2;
+            limit = 1;
+        }
+        ResultSet middleElementResult = executeQuery(connection, middleElementQuery, limit, offset);
         Double median = null;
-        if (!valueList.isEmpty()) {
-            int size = valueList.size();
-            int middle = size / 2;
-            if (size % 2 == 0) {
-                median = (valueList.get(middle - 1) + valueList.get(middle)) / 2.0;
+        if (middleElementResult.next()){
+            if (limit == 2){
+                double e1 = middleElementResult.getDouble(1);
+                middleElementResult.next();
+                double e2 = middleElementResult.getDouble(1);
+                median = (e1 + e2)/2;
             } else {
-                median = valueList.get(middle);
+                median = middleElementResult.getDouble(1);
             }
         }
-        return new ColumnStatistics<>(columnName, statistics.getMin(), statistics.getMax(), statistics.getAverage(), median);
+        return new ColumnStatistics<>(columnName, min, max, average, median);
     }
 
 
