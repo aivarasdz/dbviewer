@@ -21,13 +21,13 @@ public class ConnectionDetailsController {
     @Autowired
     private ConnectionDetailsService connectionDetailsService;
 
-    @PutMapping
+    @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createConnection(@RequestBody ConnectionDetailsModel model){
-        connectionDetailsService.addConnectionDetails(model);
+    public ConnectionDetailsModel createConnection(@RequestBody ConnectionDetailsModel model){
+        return connectionDetailsService.addConnectionDetails(model);
     }
 
-    @PostMapping
+    @PutMapping
     @ResponseStatus(code = HttpStatus.OK)
     public ConnectionDetailsModel updateConnection(@RequestBody ConnectionDetailsModel model){
         return connectionDetailsService.updateConnectionDetails(model);

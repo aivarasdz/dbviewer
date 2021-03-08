@@ -17,8 +17,8 @@ public class ConnectionDetailsServiceImpl implements ConnectionDetailsService {
     private ConnectionDetailsRepository repository;
 
     @Override
-    public void addConnectionDetails(ConnectionDetailsModel model) {
-        repository.save(mapToDetails(model));
+    public ConnectionDetailsModel addConnectionDetails(ConnectionDetailsModel model) {
+        return mapToModel(repository.save(mapToDetails(model)));
     }
 
     @Override

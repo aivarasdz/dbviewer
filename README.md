@@ -11,8 +11,8 @@ Response is returned in JSON format for all endpoints, where response is expecte
 
 | Endpoint | Request method | Response | Response body              | Description
 | ---      | ---            | ---      | ---                        | ---
-| /db      | PUT            | 201      |                            | Create new connection details
-| /db      | POST           | 200      | Updated connection details | Update existing connection details
+| /db      | POST           | 201      |                            | Create new connection details
+| /db      | PUT            | 200      | Updated connection details | Update existing connection details
 | /db      | GET            | 200      | Connection detail list     | Get list of all connection details
 | /db/{id} | GET            | 200      | Connection details by id   | Get connection details by id
 | /db/{id} | DELETE         | 204      |                            | Delete connection details by id
