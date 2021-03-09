@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ConnectionDetailsService {
 
-    void addConnectionDetails(ConnectionDetailsModel model);
+    ConnectionDetailsModel addConnectionDetails(ConnectionDetailsModel model);
     ConnectionDetailsModel updateConnectionDetails(ConnectionDetailsModel model);
     ConnectionDetailsModel getConnectionDetails(Long id);
     List<ConnectionDetailsModel> getConnectionDetailsList();
