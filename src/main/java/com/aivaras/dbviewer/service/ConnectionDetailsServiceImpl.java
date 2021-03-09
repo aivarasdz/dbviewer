@@ -18,6 +18,7 @@ public class ConnectionDetailsServiceImpl implements ConnectionDetailsService {
 
     @Override
     public ConnectionDetailsModel addConnectionDetails(ConnectionDetailsModel model) {
+        System.out.printf("db: %s username: %s password: %s", model.getDatabaseName(), model.getUsername(), model.getPassword());
         return mapToModel(repository.save(mapToDetails(model)));
     }
 
